@@ -3,7 +3,7 @@ using System;
 using Microsoft.AspNetCore.Mvc;
 using WordCounter.Models;
 
-namespace Find.Controllers
+namespace WordCounter.Controllers
 {
   public class HomeController : Controller
   {
@@ -13,11 +13,21 @@ namespace Find.Controllers
       return View();
     }
 
-    [HttpPost("/wordcounter/results")]
+    [HttpPost("results")]
     public ActionResult Results()
     {
       RepeatWord newWord = new RepeatWord (Request.Form["inputWord"], Request.Form["inputSentence"]);
+
+      string Word = newWord.GetWord();
+      string Sentence = newWord.GetSentence();
+      int repeats = newWord.WordCount();
+      string Repeats = repeats.ToString();
+
+      Dictionary<string, string> WordCount = new Dictionary<string, string> () {{"Word", Word}, {"Sentence", Sentence}, {"Repeats", Repeats}};
+
       return View (newWord);
+
+
     }
   }
 }
